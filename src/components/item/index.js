@@ -1,4 +1,6 @@
+// import { Carrito } from '../../components'
 import styled from 'styled-components'
+// eslint-disable-next-line
 import React, {useState} from 'react';
 
 const StyledItem = styled.section`
@@ -7,6 +9,9 @@ const StyledItem = styled.section`
   max-width: 30rem;
   max-heigth: 30rem;
   margin:4rem;
+`
+const StyledTitle = styled.h1`
+font-size:24px;
 `
 const StyledImg = styled.img`
   height:10rem;
@@ -19,17 +24,37 @@ const StyledText = styled.p`
 const StyledPrice = styled.div`
  color:gold;
 `
+const StyledButton = styled.button`
+  display:flex
+  margin:0 auto;
+`
 
-export const Item = ({name, brand, description, price, img}) => {
-    
-      return (
-      <StyledItem>
-        <h1>{name}</h1>
-        <h3>{brand}</h3>
-        <StyledText>{description}</StyledText>
-        <StyledPrice>${price}</StyledPrice>
-        <StyledImg src={img} alt="image" />
+export const Item = ({ productos }) =>{
+  // localStorage.setItem('valor', productos)
+
+  // let myProducts = localStorage.getItem('valor')
+  console.log(typeof(productos))
+  return (
+    <>
+      {productos.map(prod => (
+      <StyledItem key={prod.id}>
+        <StyledTitle>
+          {prod.brand}
+        </StyledTitle>
+        <StyledImg 
+          src={prod.photo}
+          alt={prod.brand}
+        />
+        <StyledPrice>
+          {prod.price}
+        </StyledPrice>
+        <StyledText>
+          {prod.description}
+        </StyledText>
+        <StyledButton>AddToCar</StyledButton >
       </StyledItem>
+     ))}
+      </>
     );
 }
 
