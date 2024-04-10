@@ -1,37 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useState, useEffect, useContext } from 'react';
+import { Cartcontext } from "./context/Context.js";
 import api from './services/api.js'
-// import styled from 'styled-components'
 import './App.css';
+import { Item , Carrito   } from './components'
+import { Skeleton } from '@mui/material'
 
-import { Item } from './components'
 function App() {
-//
+
   const [productos, setProductos] = useState();
-  // const [producto, setProducto] = useState({});
-  // const item = [];
-//
+
   useEffect(() => {
     async function getData(){
     const respo = await api.get()
     const resp = await respo.data.products
-      // const response = JSON.stringify(resp)
       setProductos(resp)
-      // eslint-disable-next-line
-      console.log(typeof(productos))
       }
     getData()
-},[]);
+},[productos]);
+  const Globalstate = useContext(Cartcontext);
+  const dispatch = Globalstate.dispatch;
 
   return (
     <div className="App">
       <header className="App-header">
-        <div>
+        <section>
           {typeof(productos) !== 'undefined' ?
-           <Item productos={productos}/>
+           <Item 
+             dispatch = { dispatch }
+             productos={productos}/>
            :
-            setTimeout(()=> 3000, <Item productos={productos}/>)
+              
+           <Skeleton variant="rectangular" animation="wave" width={340} height={340} />
           }
-        </div>
+          <Carrito />
+        </section>
       </header>
     </div>
   );
