@@ -1,3 +1,3 @@
-export * from './carrito'
-export * from './loja'
-export * from './item'
+export * from './carrito';
+export * from './item';
+export * from './skeleton';

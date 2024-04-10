@@ -1,0 +1,29 @@
+import { useContext } from "react";
+import { Cartcontext } from "../../context/Context";
+import './styles.css'
+
+export const Carrito = () => {
+  const [cart, setCart] = useContext(Cartcontext);
+
+  const quantity = cart.reduce((acc, curr) => {
+    return acc + curr.quantity;
+  }, 0);
+
+  const totalPrice = cart.reduce(
+    (acc, curr) => acc + curr.quantity * curr.price,
+    0
+  );
+  return(
+    <>
+      Carrito
+    <div className="cart-container">
+      <div>
+        <div>Items in cart: {quantity}</div>
+        <div>Total: ${totalPrice}</div>
+        <button onClick={() => console.log(cart)}>Checkout</button>
+      </div>
+    </div>
+    </>
+
+  )
+}

@@ -1,13 +1,12 @@
-// import { Carrito } from '../../components'
-import styled from 'styled-components'
-// eslint-disable-next-line
-import React, {useState} from 'react';
+import styled from 'styled-components';
+import React from 'react';
+
 
 const StyledItem = styled.section`
   border: 2px solid white;
   border-radius: 5%;
-  max-width: 30rem;
-  max-heigth: 30rem;
+  max-width: 20rem;
+  max-heigth: 20rem;
   margin:4rem;
 `
 const StyledTitle = styled.h1`
@@ -27,15 +26,13 @@ const StyledPrice = styled.div`
 const StyledButton = styled.button`
   display:flex
   margin:0 auto;
+  margin-bottom:1em;
 `
 
-export const Item = ({ productos }) =>{
-  // localStorage.setItem('valor', productos)
+export const Item = ({ productos, dispatch }) =>{
 
-  // let myProducts = localStorage.getItem('valor')
-  console.log(typeof(productos))
   return (
-    <>
+    <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center' }}>
       {productos.map(prod => (
       <StyledItem key={prod.id}>
         <StyledTitle>
@@ -51,11 +48,11 @@ export const Item = ({ productos }) =>{
         <StyledText>
           {prod.description}
         </StyledText>
-        <StyledButton>AddToCar</StyledButton >
+        <StyledButton onClick={() => dispatch({ type: "ADD", payload: prod })}
+        >AddToCar</StyledButton >
       </StyledItem>
      ))}
-      </>
+      </div>
     );
 }
-
 
