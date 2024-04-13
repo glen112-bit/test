@@ -14,7 +14,7 @@ export function CartProvider({children}){
       newCart[productInCartIndex].quantity += 1;
       return setCart(newCart)
     }
-    setCart( prevState => ([
+    setCart(prevState => ([
       ...prevState,
       {
         ...product,

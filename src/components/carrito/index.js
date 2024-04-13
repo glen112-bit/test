@@ -6,7 +6,7 @@ const StyledCart = styled.li`
   max-width: 32rem;
   margin: 0 auto;
   list-style-type: none;
-
+  margin-bottom:4rem;
 `
 const StyledImg  = styled.img`
   border-radius: 5%;
@@ -24,7 +24,7 @@ export function CartItem({ photo, price, quantity, brand  }) {
       <div>
         <strong>{brand}</strong> 
       </div>
-      <StyledPrice>-${price}</StyledPrice>
+      <StyledPrice>${price * quantity}</StyledPrice>
       <footer>
         <small>Qty: {quantity}</small>
       </footer>
@@ -36,12 +36,12 @@ export const Carrito = () => {
   const cartCheckboxId = useId();
   const { cart, clearCart } = useCart();
   localStorage.setItem('cart', JSON.stringify(cart))
-
+  const total = cart.map(car => Number(car.price * car.quantity))
   return (
     <>
       <label htmlFor="cart"></label>
       <input id={cartCheckboxId} type="checkbox" hidden />
-      <aside className="cart">
+      <StyledCart >
         <ul>
           {cart.map(prod => (
             <CartItem 
@@ -51,7 +51,8 @@ export const Carrito = () => {
           ))}
         </ul>
         <button onClick={clearCart}>Clear</button>
-      </aside>
+      </StyledCart>
+      Total:<StyledPrice>${total.reduce((a,b) => (a+b),0)} </StyledPrice>
     </>
   );
 };
