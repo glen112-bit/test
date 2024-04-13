@@ -1,56 +1,57 @@
-import { useContext } from "react";
-import { Cartcontext } from "../../context/Context";
-import './styles.css'
+import React, { useId } from "react";
+import { styled } from 'styled-components'
+import { useCart } from "../../hooks/useCart.js";
+
+const StyledCart = styled.li`
+  max-width: 32rem;
+  margin: 0 auto;
+  list-style-type: none;
+
+`
+const StyledImg  = styled.img`
+  border-radius: 5%;
+  max-width: 12rem;
+`
+const StyledPrice = styled.div`
+ color:gold;
+`
+
+export function CartItem({ photo, price, quantity, brand  }) {
+  // const { addToCart, removeFromCart } = useCart();
+  return (
+    <StyledCart>
+      <StyledImg src={photo} alt={brand} />
+      <div>
+        <strong>{brand}</strong> 
+      </div>
+      <StyledPrice>-${price}</StyledPrice>
+      <footer>
+        <small>Qty: {quantity}</small>
+      </footer>
+    </StyledCart>
+  );
+}
 
 export const Carrito = () => {
-  const Globalstate = useContext(Cartcontext);
-  const state = Globalstate.state;
-  const dispatch = Globalstate.dispatch;
-
-  const total = state.reduce((total, item) => {
-    item.price = Number(item.price)
-    // console.log('state:', state);
-    // console.log('item:', item.quantity);
-    return total + item.price * item.quantity;
-
-  }, 0);
+  const cartCheckboxId = useId();
+  const { cart, clearCart } = useCart();
+  localStorage.setItem('cart', JSON.stringify(cart))
 
   return (
-    <div className="cart">
-      {state.map((item, index) => {
-        return (
-          <div className="card" key={index}>
-            <img src={item.photo} alt="" />
-            <p>{item.brand}</p>
-            <p>{item.quantity * item.price}</p>
-            <div className="quantity">
-              <button
-                onClick={() => dispatch({ type: "INCREASE", payload: item })}>
-                +
-              </button>
-              <p>{item.quantity}</p>
-              <button
-                onClick={() => {
-                  if (item.quantity > 1) {
-                    dispatch({ type: "DECREASE", payload: item });
-                  } else {
-                    dispatch({ type: "REMOVE", payload: item });
-                  }
-                }}>
-                -
-              </button>
-            </div>
-            <h2 onClick={() => dispatch({ type: "REMOVE", payload: item })}>
-              x
-            </h2>
-          </div>
-        );
-      })}
-      {state.length > 0 && (
-        <div className="total">
-          <h2>{Number(total)}</h2>
-        </div>
-      )}
-    </div>
+    <>
+      <label htmlFor="cart"></label>
+      <input id={cartCheckboxId} type="checkbox" hidden />
+      <aside className="cart">
+        <ul>
+          {cart.map(prod => (
+            <CartItem 
+              {...prod}
+              key={prod.id}
+            />
+          ))}
+        </ul>
+        <button onClick={clearCart}>Clear</button>
+      </aside>
+    </>
   );
 };

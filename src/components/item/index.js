@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
+import { useCart } from '../../hooks/useCart.js'
 
 
 const StyledItem = styled.section`
@@ -29,11 +30,19 @@ const StyledButton = styled.button`
   margin-bottom:1em;
 `
 
-export const Item = ({ productos, dispatch }) =>{
+export const Item = ({ productos  }) =>{
+  const { addToCart, cart } = useCart()
+
+  const checkProductInCart = product => {
+    return cart.some(item => item.id === product.id)
+
+  }
 
   return (
     <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center' }}>
-      {productos.map(prod => (
+      {productos.map(prod => { 
+        const isProductInCart = checkProductInCart(prod)
+        return (
       <StyledItem key={prod.id}>
         <StyledTitle>
           {prod.brand}
@@ -43,15 +52,17 @@ export const Item = ({ productos, dispatch }) =>{
           alt={prod.brand}
         />
         <StyledPrice>
-          {prod.price}
+          ${prod.price}
         </StyledPrice>
         <StyledText>
           {prod.description}
         </StyledText>
-        <StyledButton onClick={() => dispatch({ type: "ADD", payload: prod })}
+        <StyledButton onClick={() => addToCart(prod)}
         >AddToCar</StyledButton >
       </StyledItem>
-     ))}
+        )}
+      )
+    }
       </div>
     );
 }
