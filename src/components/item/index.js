@@ -33,15 +33,10 @@ const StyledButton = styled.button`
 export const Item = ({ productos  }) =>{
   const { addToCart, cart } = useCart()
 
-  const checkProductInCart = product => {
-    return cart.some(item => item.id === product.id)
-
-  }
 
   return (
     <div style={{display: 'flex', flexWrap: 'wrap', justifyContent:'center' }}>
       {productos.map(prod => { 
-        const isProductInCart = checkProductInCart(prod)
         return (
       <StyledItem key={prod.id}>
         <StyledTitle>
